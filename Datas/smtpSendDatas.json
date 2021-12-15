@@ -1,0 +1,30 @@
+{
+    "dataDate": "2021-08-26",
+    "data": {
+        "totalDecidedPatient": "243317",
+        "todayDecidedPatient": "1882",
+        "totalDeath": "2257",
+        "increasedDeath": "20",
+        "CumulatedConfirmPercentage": "2.0015871732"
+    },
+    "briefing": {
+        "briefTopics1": [
+            "전국 이동량은 지난주 대비 5.7%(1,329만 건) 감소",
+            "https://bit.ly/3DkGeXX"
+        ],
+        "briefTopics2": [
+            "목욕장 환기 상시 가동, 정기이용권 금지(4단계) 등 목욕장업 방역 관리 강화",
+            "https://bit.ly/2Wt1Oso"
+        ]
+    },
+    "hotIssue": {
+        "issueTopics1": [
+            "‘글로벌 백신 허브화 TF’ 출범…“국내 백신 생산역량 강화”",
+            " https://www.korea.kr/news/policyNewsView.do?newsId=148888328 "
+        ],
+        "issueTopics2": [
+            "어린이집·유치원·초1~2 교사, 7~8월 방학중 접종",
+            " https://www.korea.kr/news/policyNewsView.do?newsId=148888342 "
+        ]
+    }
+}

@@ -4,12 +4,21 @@ configData:
     value: !!binary |
       WVdSdGFXND0=
 sqlConnection:
+  db:
+    encrypt: false
+    read: false
+    value: test
   host:
     encrypt: false
-    value: null
-  sqlpassword:
+    read: true
+    value: 127.0.0.1
+  password:
     encrypt: true
-    value: null
+    read: true
+    value: !!binary |
+      Vlc5d2NEazJNek14SVE9PQ==
   user:
     encrypt: true
-    value: null
+    read: true
+    value: !!binary |
+      Y205dmRBPT0=
