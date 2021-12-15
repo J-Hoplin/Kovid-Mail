@@ -1,0 +1,9 @@
+matplotlib
+seaborn
+beautifulsoup4
+schedule
+pymysql
+pytz
+requests
+pyyaml
+lxml
