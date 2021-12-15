@@ -1,18 +1,1 @@
-📦KovidMail
- ┣ 📂Datas
- ┃ ┣ 📜datarequest.py
- ┃ ┣ 📜graph.py
- ┃ ┗ 📜smtpSendDatas.json
- ┣ 📂SMTP
- ┃ ┗ 📜smtp.py
- ┣ 📂Templates
- ┃ ┣ 📜graph.png
- ┃ ┣ 📜htmlwriter.py
- ┃ ┗ 📜templates.py
- ┣ 📂Utility
- ┃ ┣ 📜.DS_Store
- ┃ ┣ 📜DButility.py
- ┃ ┣ 📜configutility.py
- ┃ ┣ 📜globalutility.py
- ┃ ┗ 📜patternchecker.py
- ┗ 📜.DS_Store
+![image](https://user-images.githubusercontent.com/45956041/146225199-24ae384f-66b7-4fa8-8456-3eeb53c38022.png)
