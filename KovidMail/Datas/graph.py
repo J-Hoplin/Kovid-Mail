@@ -25,6 +25,7 @@ class makegraph(GlobalUtilities):
         if not self.dbc.getCurrentData():
             self.rqd.generateTestData()
         self.data = self.dbc.getCurrentData()
+        self.noticeMSGHandler("Generating Graph...")
         plt.style.use('default')
         plt.rcParams['figure.figsize'] = (15,10)
         plt.rcParams['font.size'] = 15
