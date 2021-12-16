@@ -8,8 +8,6 @@ from KovidMail.Datas.graph import makegraph
 from KovidMail.SMTP.smtp import SendMail
 from KovidMail.Utility.globalutility import GlobalUtilities
 
-
-
 class scheduler(GlobalUtilities):
     def __init__(self,logger):
         # Due to sharing instance address, it requires order of declaration
@@ -23,10 +21,8 @@ class scheduler(GlobalUtilities):
         self.ptck = patternChecker()
         self.clearConsole()
         self.checkBasicConditionForService()
-
         # Logger
         self.logger = logger
-
 
     def checkServiceKeyExist(self):
         testkey = " "
@@ -81,7 +77,6 @@ class scheduler(GlobalUtilities):
                 self.logLevelWarning("The three reasons why you can't send an email.\n1. API hasn't been updated(High possibility at time of 00 : 00 ~ 10 : 00)\n2. Your api keys might be wrong\n3. Request address might be wrong")
                 time.sleep(5)
             else:
-                self.noticeMSGHandler("Drawing Graph...")
                 self.graphGen.buildGrarph()
                 # sendres : variable for checking send or fail
                 sendres = True
@@ -102,10 +97,8 @@ class scheduler(GlobalUtilities):
 def start():
     p.main()
 
-
-
 if __name__ == "__main__":
-    scheduledtime = "13:54"
+    scheduledtime = "10:00"
     GlobalUtilities.clearConsole()
     # Logger
     logger = logging.getLogger("Kovid-Mail-Scheduler")
@@ -123,7 +116,7 @@ if __name__ == "__main__":
     # Schedule
     schedule.every().day.at(scheduledtime).do(start)
     loop = True
-    logger.info(f"Scheduler now executed! Listening until {scheduledtime}")
+    logger.info(f"Scheduler now executed! Listening until {scheduledtime}!")
     while loop:
         try:
             # 예약작업 실행 : scheduler.main()
