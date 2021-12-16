@@ -68,6 +68,8 @@ class scheduler(GlobalUtilities):
         self.logger.warning(msg)
 
     def main(self):
+        #Get reconnect to database
+        self.dbmg.readConfigAndGetConnection()
         self.logLevelInfo("Start stream!")
         mainloop = True
         while mainloop:
@@ -134,7 +136,7 @@ if __name__ == "__main__":
         try:
             # 예약작업 실행 : scheduler.main()
             schedule.run_pending()
-            logger.info("Listening... | Press Ctrl + C to exit")
+            logger.info(f"Listening... | Press Ctrl + C to exit")
             time.sleep(3)
         except KeyboardInterrupt as e:
             p.closeSession()

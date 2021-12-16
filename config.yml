@@ -7,6 +7,9 @@ sqlConnection:
   host:
     encrypt: false
     value: null
+  port:
+    encrypt: false
+    value: null
   sqlpassword:
     encrypt: true
     value: null

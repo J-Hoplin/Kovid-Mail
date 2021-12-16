@@ -19,6 +19,7 @@ class requestData(GlobalUtilities):
 
     def getServiceData(self):
         serviceData = self.dbmg.getServiceDatas()
+        # If data is not exist it will move to key initiating page
         if not serviceData:
             self.warningMSGHandler("You need to Initiate Keys to run service.")
             self.dbmg.initiateKeys()

@@ -30,6 +30,7 @@ class dbutility(GlobalUtilities):
             self.dbfield = self.config['sqlConnection']
             self.sqlConnection = sql.connect(
                 user = self.decrypt(self.dbfield['user']['value']),
+                port = int(self.dbfield['port']['value']),
                 password= self.decrypt(self.dbfield['sqlpassword']['value']),
                 host = self.dbfield['host']['value']
             )

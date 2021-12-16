@@ -161,7 +161,7 @@ class application(GlobalUtilities):
     def moveToConfig(self):
         self.configwt.optionSelector()
         self.dbmg.readConfigAndGetConnection()
-
+        self.dbmg.essentialDatabaseInitiator()
 
     def reconnect(self):
         self.dbmg.reconnect()

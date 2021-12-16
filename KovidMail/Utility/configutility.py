@@ -32,6 +32,11 @@ class ConfigurationWriter(GlobalUtilities):
                                 'encrypt': False,
                                 'value': None
                             },
+                        'port':
+                            {
+                                'encrypt' : False,
+                                'value' : None
+                            },
                         'sqlpassword':
                             {
                                 'encrypt': True,
