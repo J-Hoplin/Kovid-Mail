@@ -50,16 +50,6 @@ Database Manger입니다 Manage Tool에서 7번을 입력하면 Database Manager
 
 이 이상 자세한 메뉴얼은 추후 업데이트 하도록 하겠습니다
 ***
-### UI
-
-< IOS Gmail App >
-
-![IMG_1364](https://user-images.githubusercontent.com/45956041/146399541-21f9ae25-2ad4-4be1-913a-8ab404744a72.PNG)
-
-< IOS Naver App >
-
-![IMG_1365](https://user-images.githubusercontent.com/45956041/146399579-bb28196d-9b19-4ea2-abe4-c82587fae5bd.PNG)
-***
 ### Work Stream Chart
 
 ![kovidmailblueprint](https://user-images.githubusercontent.com/45956041/146399739-43f34742-e21c-4a78-b06e-e17c33aa6e4c.png)
