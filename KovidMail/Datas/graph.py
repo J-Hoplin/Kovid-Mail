@@ -13,7 +13,7 @@ class makegraph(GlobalUtilities):
     # Get today patient y-axis maximum value
     def getY2Maximum(self,val):
         add = int('1' + str((len(str(val)) - 1) * '0'))
-        return ((int(val) // add) * add) + add * 2
+        return ((int(val) // add) * add) + add * 3
 
     #Get total patient y-axis maximum value
     def getY1Maximum(self,val):
