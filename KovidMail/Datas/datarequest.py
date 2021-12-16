@@ -90,7 +90,7 @@ class requestData(GlobalUtilities):
                 return False
         return newsdict
 
-    def reProcessXML(self, BSXML: BeautifulSoup,addNewData=False) -> bool:
+    def reProcessXML(self, BSXML: BeautifulSoup) -> bool:
         #If BSXML is False : it means fail to make request
         if not BSXML:
             return
@@ -102,7 +102,9 @@ class requestData(GlobalUtilities):
             #res = self.buildRequests(1,-2)
             #item = res.findAll('item')
         else:
-            print("API data updated successfully. Continue process...")
+            self.noticeMSGHandler("New data has been updated successfully. Continue process...")
+        # Pre process API Request Result
+        self.noticeMSGHandler("Pre processing datas...")
         dayBefore = item[1]
         today = item[0]
         dataDate = datetime.strptime(today.find('stateDt').text, "%Y%m%d").date().strftime("%Y-%m-%d")
@@ -111,8 +113,24 @@ class requestData(GlobalUtilities):
         totalDeath = today.find('deathCnt').text
         increasedDeath = str(int(today.find('deathCnt').text) - int(dayBefore.find('deathCnt').text))
 
-        if addNewData:
-            self.dbmg.setCurrentData(f"\'{dataDate}\',\'{totalDecidedPatient}\',\'{todayDecidedPatient}\',\'{totalDeath}\',\'{increasedDeath}\'")
+        # Graph Data
+        # Return : [latest data's date field, length of current date]
+        self.noticeMSGHandler("Checking data for graph...")
+        getCurrentData = self.dbmg.getCurrentDataOnlyRecentDate()
+        # If empty set
+        if not getCurrentData:
+            self.generateTestData()
+        # If have at least one data
+        else:
+            latestDataDate = getCurrentData[0]
+            #today's date as string
+            now = (datetime.now(timezone('Asia/Seoul')) + timedelta(days=0)).strftime("%Y-%m-%d")
+            #Pass if recent data's date field is same with today
+            if now == latestDataDate:
+                pass
+            #Generate data if it's not
+            else:
+                self.dbmg.setCurrentData(f"\'{dataDate}\',\'{totalDecidedPatient}\',\'{todayDecidedPatient}\',\'{totalDeath}\',\'{increasedDeath}\'")
 
         res = self.addNews()
         if not res:

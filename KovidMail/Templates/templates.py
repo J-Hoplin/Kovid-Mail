@@ -4,7 +4,7 @@ from pytz import timezone
 
 class template:
     def __init__(self):
-        self.easteregg = "https://github.com/J-hoplin1/Kovid-Mail"
+        self.easteregg = "https://github.com/J-hoplin1/KovidMail"
 
     def Template1(self,databox):
         covidData = databox["data"]

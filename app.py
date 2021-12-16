@@ -9,7 +9,7 @@ from KovidMail.SMTP.smtp import SendMail
 from KovidMail.Utility.globalutility import GlobalUtilities
 
 
-option = Enum('opt',["Service_Test","Add_Subscriber","Delete_User","View_Subscriber_List","Broadcast","Configuration_Writer","Database_Manager","End"])
+option = Enum('opt',["Service_Test","Add_Subscriber","Delete_User","View_Subscriber_List","Broadcast","Configuration_Writer","Database_Manager","About_This_Software","End"])
 
 class application(GlobalUtilities):
     '''
@@ -70,41 +70,28 @@ class application(GlobalUtilities):
 
     def serviceTester(self):
         subs = self.dbmg.getSubscriberList()
-        yorn = Enum('yorn',['Y','N'])
-        loop = True
-        while loop:
-            print("Update today data to SQL?")
-            res = self.returnSelectedOption(yorn)
-            if not res:
-                self.noticeMSGHandler("Close Session")
-                self.pressKeyToContinue()
-                loop = False
-            else:
-                res = res.name
-                result = True
-                if res == 'Y':
-                    result = self.dataRequest.reProcessXML(self.dataRequest.buildRequests(),True)
-                elif res == 'N':
-                    result = self.dataRequest.reProcessXML(self.dataRequest.buildRequests(),False)
-                if not result:
-                    self.warningMSGHandler("The three reasons why you can't send an email.\n1. API hasn't been updated\n2. Your api keys might be wrong\n3. Request address might be wrong")
-                    self.pressKeyToContinue()
+        result = self.dataRequest.reProcessXML(self.dataRequest.buildRequests())
+        if not result:
+            self.warningMSGHandler("The three reasons why you can't send an email.\n1. API hasn't been updated(High possibility at time of 00 : 00 ~ 10 : 00)\n2. Your api keys might be wrong\n3. Request address might be wrong")
+            self.pressKeyToContinue()
+            loop = False
+        else:
+            self.noticeMSGHandler("Drawing Graph...")
+            self.graphGen.buildGrarph()
+            # sendres : variable for checking send or fail
+            sendres = True
+            for i in subs:
+                sendres = self.smtpMod.buildMimeAndSendMail(i)
+                if not sendres:
                     loop = False
-                else:
-                    self.graphGen.buildGrarph()
-                    # sendres : variable for checking send or fail
-                    sendres = True
-                    for i in subs:
-                        sendres = self.smtpMod.buildMimeAndSendMail(i)
-                        if not sendres:
-                            loop = False
-                            self.pressKeyToContinue()
-                            return
-                        print(f"Complete to send mail : {i}")
-                    print()
-                    print("Complete to send mail")
                     self.pressKeyToContinue()
-                    loop = False
+                    return
+                print(f"Complete to send mail to : {i}")
+            print()
+            print("Complete to send mail")
+            self.pressKeyToContinue()
+            loop = False
+
 
     def addSubsciber(self):
         subs = self.dbmg.getSubscriberList()
@@ -191,6 +178,25 @@ class application(GlobalUtilities):
         self.dbmg.selectOption()
         self.checkServiceKeyExist()
 
+    def aboutThisSoftware(self):
+        state = """
+        < Kovid Mail Service > 
+        
+        1. What is this software for? : This sofware is for Korea Covid 19 Information Mail Service. This software is manage tool for service
+        
+        2. Optimized OS : Linux / Mac OS.
+        
+        3. Made by : Hoplin
+        
+        4. This software is Open source, you can see source code at Github
+        
+            - Github : https://github.com/J-hoplin1/KovidMail
+            
+            - License : MIT License
+        """
+        print(state)
+        self.pressKeyToContinue()
+
     def main(self):
         __optionMapper = {
             "Service_Test" : self.serviceTester,
@@ -199,7 +205,8 @@ class application(GlobalUtilities):
             "View_Subscriber_List" : self.ViewSubscriber,
             "Broadcast" : self.broadcast,
             "Configuration_Writer" : self.moveToConfig,
-            "Database_Manager" : self.toDBMG
+            "Database_Manager" : self.toDBMG,
+            "About_This_Software" : self.aboutThisSoftware
         }
         loop = True
         executedTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

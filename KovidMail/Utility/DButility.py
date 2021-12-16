@@ -8,7 +8,7 @@ class dbutility(GlobalUtilities):
     config = None
     dbfield = None
     sqlConnection = None
-    __option = Enum('option', ["Initiate_Keys", "Edit_Key", "Delete_Database", "Add_Tag", "Delete_Tag", "exit"])
+    __option = Enum('option', ["Initiate_Keys", "Edit_Key", "Reset_Database", "Add_Tag", "Delete_Tag", "exit"])
 
     def __init__(self,configutil):
         self.configutil = configutil
@@ -249,6 +249,7 @@ class dbutility(GlobalUtilities):
                     self.clearConsole()
                     self.warningMSGHandler("잘못된 값이 입력되었습니다. 'Yes' 혹은 'No'만 입력해주세요.")
 
+    #Combined method with datarequest.generateTestData
     def testData(self, res):
         item = res.findAll('item')
         self.sqlCursor.execute(f"USE CURRENTDATA")
@@ -283,6 +284,14 @@ class dbutility(GlobalUtilities):
         self.sqlCursor.execute(sqlState)
         datas = self.sqlCursor.fetchall()
         return datas[-4:]
+
+    def getCurrentDataOnlyRecentDate(self):
+        base = self.getCurrentData()
+        renew = list()
+        if not base:
+            return False
+        else:
+            return [base[-1]['Date'],len(base)]
 
     def setCurrentData(self, state):
         db = self.kovidCurrentData
@@ -366,7 +375,7 @@ class dbutility(GlobalUtilities):
         mainFunctionMapper = {
             "Initiate_Keys": self.initiateKeys,
             "Edit_Key": self.editIndividualKey,
-            "Delete_Database": self.deleteDatabase,
+            "Reset_Database": self.deleteDatabase,
             "Add_Tag": self.addTag,
             "Delete_Tag": self.deleteTag,
         }
@@ -385,4 +394,3 @@ class dbutility(GlobalUtilities):
                 else:
                     mainFunctionMapper[res]()
             self.clearConsole()
-
