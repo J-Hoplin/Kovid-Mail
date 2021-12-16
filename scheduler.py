@@ -121,7 +121,12 @@ if __name__ == "__main__":
     # Scheduler Instance
     p = scheduler(logger)
     # Schedule
-    schedule.every().day.at(scheduledtime).do(start)
+    try:
+        schedule.every().day.at(scheduledtime).do(start)
+    #If wron type of time format : Close
+    except schedule.ScheduleValueError as e:
+        GlobalUtilities.globalErrorMSGHandler("Wrong types of time format. Scheduler close")
+        sys.exit()
     loop = True
     logger.info(f"Schedule time has been set : {scheduledtime}")
     logger.info(f"Scheduler now executed! Listening until {scheduledtime}!")
