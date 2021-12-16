@@ -1,4 +1,4 @@
-import schedule,time
+import schedule,time,sys
 import pymysql,logging
 from KovidMail.Utility.configutility import ConfigurationWriter
 from KovidMail.Utility.DButility import dbutility
@@ -98,8 +98,15 @@ def start():
     p.main()
 
 if __name__ == "__main__":
+    #Default time is 10:00
     scheduledtime = "10:00"
     GlobalUtilities.clearConsole()
+    argss = sys.argv
+    try:
+        #If schedule time exist as arguments, change time
+        scheduledtime = argss[1]
+    except IndexError as e:
+        pass
     # Logger
     logger = logging.getLogger("Kovid-Mail-Scheduler")
     logger.setLevel(logging.DEBUG)
@@ -116,6 +123,7 @@ if __name__ == "__main__":
     # Schedule
     schedule.every().day.at(scheduledtime).do(start)
     loop = True
+    logger.info(f"Schedule time has been set : {scheduledtime}")
     logger.info(f"Scheduler now executed! Listening until {scheduledtime}!")
     while loop:
         try:
