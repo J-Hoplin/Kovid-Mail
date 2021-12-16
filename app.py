@@ -76,7 +76,6 @@ class application(GlobalUtilities):
             self.pressKeyToContinue()
             loop = False
         else:
-            self.noticeMSGHandler("Drawing Graph...")
             self.graphGen.buildGrarph()
             # sendres : variable for checking send or fail
             sendres = True
