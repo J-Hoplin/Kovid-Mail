@@ -52,7 +52,8 @@ Database Manger입니다 Manage Tool에서 7번을 입력하면 Database Manager
 ***
 ### Work Stream Chart
 
-![kovidmailblueprint](https://user-images.githubusercontent.com/45956041/146399739-43f34742-e21c-4a78-b06e-e17c33aa6e4c.png)
+![image](https://user-images.githubusercontent.com/45956041/146683952-9d04dcde-1eb2-4411-af8e-5016cfed0a61.png)
+
 
 
 
