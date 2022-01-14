@@ -98,7 +98,7 @@ class scheduler(GlobalUtilities):
 
     def main(self):
         # Re - request counter
-        re_try = 30
+        re_try = 0
         #Get connection to database manager
         self.dbmg.readConfigAndGetConnection()
         self.logLevelInfo("Start stream!")
