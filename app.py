@@ -98,7 +98,7 @@ class scheduler(GlobalUtilities):
 
     def main(self):
         # Re - request counter
-        re_try = 0
+        re_try = 30
         #Get connection to database manager
         self.dbmg.readConfigAndGetConnection()
         self.logLevelInfo("Start stream!")
@@ -108,6 +108,7 @@ class scheduler(GlobalUtilities):
         while mainloop:
             #Limit maximum request count
             if re_try >= MAXIMUM_REQUEST_COUNT:
+                self.logLevelInfo("Maximum request exceeded. Send mail to users about why scheduler can't send mail.")
                 for i in subs:
                     sendres = self.smtpMod.buildMimeAndSendMail(i,True,BROADCAST_TITLE,BROADCAST_CONTENT)
                     if not sendres:
