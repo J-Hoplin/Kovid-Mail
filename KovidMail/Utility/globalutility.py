@@ -6,6 +6,7 @@ Code written by Hoplin
 import os,yaml,base64,getpass,pymysql,platform
 from typing import Any
 
+
 class textColor:
     '''
     Class : For text color in CLI UI
@@ -25,7 +26,9 @@ class GlobalUtilities(object):
     __configLocation = 'config.yml'
     dataJSONDirectory = 'KovidMail/Datas/smtpSendDatas.json'
     graphDirectory = 'KovidMail/Templates/graph.png'
+    keyboardIntteruptMSG = "Ctrl + C 커맨드는 사용하실 수 없습니다. /back 커맨드를 이용해 주세요"
     wrongInpMSG = "잘못된 입력값입니다. 다시 입력해주세요."
+    BACK_COMMAND = "/back"
     newsTag = {
         "databasename": "SERVICEDATAS",
         "sqlschema": "newstag",
@@ -116,6 +119,10 @@ class GlobalUtilities(object):
     @classmethod
     def globalErrorMSGHandler(cls,message):
         print(f"{textColor.FAIL}Error : {message}{textColor.ENDC}")
+
+    @staticmethod
+    def globalNoticeMSGHandler(message):
+        print(f"{textColor.OKBLUE}Software Notice : {message}{textColor.ENDC}")
 
     # base64.b64encode / base64.b64decode document : https://docs.python.org/ko/3.7/library/base64.html
     # encrypt data : 사실 암호화가 아닌 유사 기능입니다
@@ -225,7 +232,7 @@ class GlobalUtilities(object):
             try:
                 select = input(">> ")
                 # Command : /back : go back to previous page
-                if select == "/back":
+                if select == self.BACK_COMMAND:
                     self.clearConsole()
                     return False
                 else:
@@ -235,10 +242,13 @@ class GlobalUtilities(object):
                     else:
                         self.clearConsole()
                         self.warningMSGHandler(self.wrongInpMSG)
+            # ValueError에 대해서는 콘솔 클리어만 한다
             except ValueError as e:
                 self.clearConsole()
                 self.warningMSGHandler(self.wrongInpMSG)
                 pass
+            # KeyboardInterrupt 사용불가
             except KeyboardInterrupt as e:
                 self.clearConsole()
-                return False
+                self.warningMSGHandler(self.keyboardIntteruptMSG)
+                pass

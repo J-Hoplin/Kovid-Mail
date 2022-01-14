@@ -55,6 +55,9 @@ class requestData(GlobalUtilities):
         except requests.exceptions.MissingSchema as e:
             self.globalErrorMSGHandler("Fail while sending request.\nPlease check request url.")
             return False
+        except requests.exceptions.InvalidURL as e:
+            self.globalErrorMSGHandler("Fail while sending request.\nPlease check request url.")
+            return False
         response = response.decode('utf-8')  # bytestring to Normal String
         res = BeautifulSoup(response, 'lxml-xml')
         return res

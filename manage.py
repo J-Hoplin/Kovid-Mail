@@ -210,27 +210,31 @@ class application(GlobalUtilities):
         loop = True
         executedTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         while loop:
-            print("< Kovid Mail Service Manage Tool >")
-            print()
+            print("< Kovid Mail Service Manage Tool >\n")
             if self.dbmg.returnConnectionStatus():
                 self.connectionMSGHandelr("My-SQL connetion Status : ", self.dbmg.returnConnectionStatus())
             else:
                 self.connectionOddMSGHandler("My-SQL connetion Status : ", self.dbmg.returnConnectionStatus())
             print(f"System Info : {platform.platform()}")
             print(f"Executed Time : {executedTime}")
-            res = self.returnSelectedOption(option)
-            if not res:
-                self.closeSession()
-                loop = False
-            else:
-                res = res.name
-                if res != "End":
-                    self.clearConsole()
-                    __optionMapper[res]()
+            try:
+                res = self.returnSelectedOption(option)
+                if not res:
+                    self.warningMSGHandler(f"You can't use {self.BACK_COMMAND} command in main.")
                 else:
-                    self.closeSession()
-                    loop = False
+                    res = res.name
+                    if res != "End":
+                        self.clearConsole()
+                        __optionMapper[res]()
+                    else:
+                        self.closeSession()
+                        loop = False
+                    self.clearConsole()
+            # Exception : For connection lost due to long term non-usage
+            except pymysql.err.OperationalError as e:
                 self.clearConsole()
+                self.noticeMSGHandler("Reconnect to SQL Server due to long term non-usage")
+                self.dbmg.readConfigAndGetConnection()
 
 if __name__ == "__main__":
     GlobalUtilities.clearConsole()

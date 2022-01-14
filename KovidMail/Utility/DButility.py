@@ -20,7 +20,7 @@ class dbutility(GlobalUtilities):
 
     def readConfigAndGetConnection(self):
         def exceptionHandle(self):
-            self.globalErrorMSGHandler("Service Locked. Can't connect to MySQL. Due to wrong information.")
+            self.globalErrorMSGHandler("Service Locked. Can't connect to SQL due to wrong information.")
             self.globalErrorMSGHandler("Move to configuration writer.")
             self.pressKeyToContinue()
             self.configutil.writer()
@@ -42,6 +42,11 @@ class dbutility(GlobalUtilities):
         # 초기화 후 NoneType에 대해 decrypt에서 ASCII오류 발생시
         except TypeError as e:
             exceptionHandle(self)
+        except ValueError as e:
+            self.globalErrorMSGHandler("Some values of your configuration data make collision while connecting to SQL.")
+            self.globalErrorMSGHandler("Please write SQL configuration information again.")
+            self.configutil.writer()
+            self.readConfigAndGetConnection()
 
     def returnConnectionStatus(self):
         if self.sqlConnection.open:

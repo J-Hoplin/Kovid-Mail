@@ -125,17 +125,18 @@ class ConfigurationWriter(GlobalUtilities):
     def writer(self):
         writingSector = self.__yamlInstance['sqlConnection']
         features = list(writingSector.keys())
+        forceBreak = False
         for i in features:
-            forceBreak = False
             loop = True
             while loop:
                 try:
                     value = " "
                     if writingSector[i]['encrypt']:
-                        value = self.hideInput("Save information %8s >> " % i)
+                        value = self.hideInput("Save information %10s >> " % i)
                     else:
-                        value = self.normalInput("Save information %8s >> " % i)
+                        value = self.normalInput("Save information %10s >> " % i)
                     if not value:
+                        print("\n")
                         self.warningMSGHandler("Writer stopped due to abnormal Input")
                         forceBreak = True
                         loop = False
@@ -192,6 +193,7 @@ class ConfigurationWriter(GlobalUtilities):
         loop = True
         while loop:
             res = self.returnSelectedOption(self.__options,False)
+            # Configutility 에서는 KeyboardInterrupt, Back command 모두 이전으로 돌아가는것으로 판정
             if not res:
                 loop = False
             else:
