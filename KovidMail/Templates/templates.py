@@ -3,8 +3,18 @@ from datetime import datetime, timedelta
 from pytz import timezone
 
 class template:
+    '''
+
+    Deprecated : templates.py will be replaced with Python Django Base template ( from Official Release 1.0 )
+
+    Template1 : Will be used in official version release. This HTML layout is not for mobile user, but for smart watch users.
+
+    Template2 : For mobile mail application users
+    '''
     def __init__(self):
         self.easteregg = "https://github.com/J-hoplin1/KovidMail"
+        #How many days will data contain
+        self.graphRange = 7
 
     def Template1(self,databox):
         covidData = databox["data"]
@@ -100,12 +110,12 @@ class template:
                         <div class="main-layout" style="height: 90%;width: 100%;padding: 0px;">
                             <h1 style="font-size: 32px;border-bottom: 2px solid #8D94BA;">{executed}<br>코로나 바이러스 브리핑</h1>
                             <h2>< 금일 신규 확진자 및 사망자 정보 ></h2>
-                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 확진자 수 : {covidData['totalDecidedPatient']}명</p>
-                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 사망자 수: {covidData['totalDeath']}명</p>
-                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 신규 확진자 수 : {covidData['todayDecidedPatient']}명</p>
-                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 사망자 수 : {covidData['increasedDeath']}명</p>
+                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 확진자 수 : {format(int(covidData['totalDecidedPatient']),',')}명</p>
+                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 사망자 수: {format(int(covidData['totalDeath']),',')}명</p>
+                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 신규 확진자 수 : {format(int(covidData['todayDecidedPatient']),',')}명</p>
+                            <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 사망자 수 : {format(int(covidData['increasedDeath']),',')}명</p>
                             <div class="img-container" style="padding: 10px 0px;width:600px;">
-                                <h3 class="plot-title" style="margin: 0; text-align: center;">지난 4일간 확진자수 추이 그래프</h3>
+                                <h3 class="plot-title" style="margin: 0; text-align: center;">지난 {self.graphRange}일간 확진자수 추이 그래프</h3>
                                 <img style="width: 600px;height: 400px;" src="cid:graph" class="graph">
                             </div>
                             <br>
@@ -240,13 +250,13 @@ class template:
                 <div class="main-layout" style="height: 90%;width: 100%;padding: 0px;">
                     <h1 style="font-size: 32px;border-bottom: 2px solid #8D94BA;">{executed}<br>코로나19 바이러스 일일 브리핑</h1>
                     <h2>< 금일 신규 확진자 및 사망자 정보 ></h2>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 확진자 수 : {covidData['totalDecidedPatient']}명</p>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 사망자 수: {covidData['totalDeath']}명</p>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 신규 확진자 수 : {covidData['todayDecidedPatient']}명</p>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 사망자 수 : {covidData['increasedDeath']}명</p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 확진자 수 : {format(int(covidData['totalDecidedPatient']),',')}명</p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">전체 사망자 수: {format(int(covidData['totalDeath']),',')}명</p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 신규 확진자 수 : {format(int(covidData['todayDecidedPatient']),',')}명</p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">일일 사망자 수 : {format(int(covidData['increasedDeath']),',')}명</p>
                     <div class="img-container" style="padding: 10px 0px;width:600px;">
-                        <h3 class="plot-title" style="margin: 0; text-align: center;">지난 4일간 확진자수 추이 그래프</h3>
-                        <img style="width: 600px;height: 400px;" src="cid:graph" class="graph">
+                        <h3 class="plot-title" style="margin: 0; text-align: center;">지난 {self.graphRange}일간 확진자수 추이 그래프</h3>
+                        <img style="width: 600px;height: 400px;border-radius: 6px;" src="cid:graph" class="graph">
                     </div>
                     <h2>< 주요 토픽 뉴스 ></h2>
                     <h3>#{topicKeys[0]}</h3>
