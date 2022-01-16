@@ -114,9 +114,8 @@ class scheduler(GlobalUtilities):
                     if not sendres:
                         loop = False
                         self.logLevelWarning(f"Fail to send mail to {i} due to wrong email format")
-                        self.pressKeyToContinue()
-                        return
                     print(f"Complete to send mail to : {i}")
+                self.dbmg.endConnection()
                 break
             result = self.dataRequest.reProcessXML(self.dataRequest.buildRequests())
             #If API hasn't updated yet
