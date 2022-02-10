@@ -9,13 +9,14 @@ from KovidMail.Datas.graph import makegraph
 from KovidMail.SMTP.smtp import SendMail
 from KovidMail.Utility.globalutility import GlobalUtilities
 
-DEFAUTL_SCHEDULE_TIME = "10:00"
+class DefaultConfiguration:
+    DEFAUTL_SCHEDULE_TIME = "10:00"
+    MAXIMUM_REQUEST_COUNT = 200
+    BROADCAST_CONTENT = "금일 코로나19 정보는 API가 업데이트 되지 않은 관계로 전송이 되지 않습니다. 불편을 끼쳐드려 죄송합니다."
+    RE_REQUEST_TIME = 120
 
 class scheduler(GlobalUtilities):
-    MAXIMUM_REQUEST_COUNT = 30
-    RE_REQUEST_TIME = 120
-    BROADCAST_TITLE = f"{datetime.today().strftime('%Y년 %m월 %d일')} 코로나 19 데이터 전송 불가에 대하여"
-    BROADCAST_CONTENT = "금일 코로나19 정보는 API가 업데이트 되지 않은 관계로 전송이 되지 않습니다. 불편을 끼쳐드려 죄송합니다."
+
     '''
     scheduler
 
@@ -49,6 +50,7 @@ class scheduler(GlobalUtilities):
         self.ptck = patternChecker()
         self.clearConsole()
         self.checkBasicConditionForService()
+        self.dbmg.dropCurrentDataDataBaseIfExist()
         # Logger
         self.logger = logger
 
@@ -110,7 +112,7 @@ class scheduler(GlobalUtilities):
             if re_try >= self.MAXIMUM_REQUEST_COUNT:
                 self.logLevelInfo("Maximum request exceeded. Send mail to users about why scheduler can't send mail.")
                 for i in subs:
-                    sendres = self.smtpMod.buildMimeAndSendMail(i,True,self.BROADCAST_TITLE,self.BROADCAST_CONTENT)
+                    sendres = self.smtpMod.buildMimeAndSendMail(i,True,f"{datetime.today().strftime('%Y년 %m월 %d일')} 코로나 19 데이터 전송 불가에 대하여",DefaultConfiguration.BROADCAST_CONTENT)
                     if not sendres:
                         loop = False
                         self.logLevelWarning(f"Fail to send mail to {i} due to wrong email format")
@@ -121,9 +123,9 @@ class scheduler(GlobalUtilities):
             #If API hasn't updated yet
             if not result:
                 self.logLevelWarning("The three reasons why you can't send an email.\n1. API hasn't been updated(High possibility at time of 00 : 00 ~ 10 : 00)\n2. Your api keys might be wrong\n3. Request address might be wrong")
-                self.logLevelWarning(f"Request again after {self.RE_REQUEST_TIME // 60}minute")
+                self.logLevelWarning(f"Request again after {DefaultConfiguration.RE_REQUEST_TIME // 60}minute")
                 # Request every 2minute.
-                time.sleep(self.RE_REQUEST_TIME)
+                time.sleep(DefaultConfiguration.RE_REQUEST_TIME)
                 # Add +1 of re-request count
                 re_try += 1
             # If API updated successfully
@@ -149,13 +151,15 @@ def start():
     p.main()
 
 if __name__ == "__main__":
-    #Default time is 10:00
-    scheduledtime = DEFAUTL_SCHEDULE_TIME
+    #Set Default Values
+    scheduledtime = DefaultConfiguration.DEFAUTL_SCHEDULE_TIME
+    maximum_request = DefaultConfiguration.MAXIMUM_REQUEST_COUNT
     GlobalUtilities.clearConsole()
     argss = sys.argv
     try:
         #If schedule time exist as arguments, change time
         scheduledtime = argss[1]
+        maximum_request = argss[2]
     except IndexError as e:
         pass
     # Logger

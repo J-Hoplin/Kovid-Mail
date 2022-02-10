@@ -2,7 +2,10 @@ import sys
 from datetime import datetime
 from enum import Enum
 import pymysql as sql
+import pymysql.err
+
 from KovidMail.Utility.globalutility import GlobalUtilities
+from KovidMail.Utility.configutility import ConfigurationWriter
 
 class dbutility(GlobalUtilities):
     config = None
@@ -10,13 +13,14 @@ class dbutility(GlobalUtilities):
     sqlConnection = None
     __option = Enum('option', ["Initiate_Keys", "Edit_Key", "Reset_Database", "Add_Tag", "Delete_Tag", "exit"])
 
-    def __init__(self,configutil):
+    def __init__(self,configutil : ConfigurationWriter):
         self.configutil = configutil
         self.readConfigAndGetConnection()
         self.essentialDatabaseInitiator()
 
     def reconnect(self):
         self.readConfigAndGetConnection()
+
 
     def readConfigAndGetConnection(self):
         def exceptionHandle(self):
@@ -84,6 +88,15 @@ class dbutility(GlobalUtilities):
         self.sqlCursor.execute(f"USE {dbname}")
         self.sqlCursor.execute(f"{sqlschema}")
         self.noticeMSGHandler(f"Create table : {databaseInfo['tablename']} at database {dbname}")
+
+    def dropCurrentDataDataBaseIfExist(self):
+        # This method is for Daemon initialization
+        # Drop current database if exist
+        state = "drop database CURRENTDATA;"
+        try:
+            self.sqlCursor.execute(state)
+        except pymysql.err.OperationalError:
+            pass
 
     def onlyInitiateTable(self,databaseInfo):
         dbname = databaseInfo["databasename"]
@@ -289,9 +302,12 @@ class dbutility(GlobalUtilities):
         sqlState = f"SELECT * FROM {db['tablename']}"
         self.sqlCursor.execute(sqlState)
         datas = self.sqlCursor.fetchall()
-        return datas[-7:]
+        return datas
 
     def getCurrentDataOnlyRecentDate(self):
+        '''
+        This method will be deprecated soon
+        '''
         base = self.getCurrentData()
         renew = list()
         if not base:

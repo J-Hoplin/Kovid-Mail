@@ -1,3 +1,9 @@
+'''
+This class will be deprecated
+
+due to API Source Change
+'''
+
 import sys,requests,json
 from pytz import timezone
 from typing import MutableSequence
@@ -7,11 +13,13 @@ from datetime import datetime, timedelta
 
 sys.path.append("..")
 from KovidMail.Utility.globalutility import GlobalUtilities
+# For type clarify
+from KovidMail.Utility.DButility import dbutility
 
 
 class requestData(GlobalUtilities):
 
-    def __init__(self,dbmg):
+    def __init__(self,dbmg : dbutility):
         #Set variable access : Private
         self.__datapack = dict()
         self.dbmg = dbmg # Database manager address from hub application
@@ -32,12 +40,13 @@ class requestData(GlobalUtilities):
                 self.__datapack[i] = serviceData[0][i]
 
     # end date : + 1 start date : -1
-    def buildRequests(self,end = 1,exec = -1) -> BeautifulSoup:
+    def buildRequests(self,end = 0,exec = -1) -> BeautifulSoup:
         self.getServiceData()
         # 코드 실행한 시점
         executedPoint = datetime.now(timezone('Asia/Seoul'))
         endDate = executedPoint + timedelta(days=end)  # 하루뒤의 시간을 의미한다.
         executedPoint = executedPoint + timedelta(days=exec)
+        print(f"{endDate} {executedPoint}")
         # 시작범위 : Datetime
         searchStart = executedPoint.strftime("%Y%m%d")  # strftime으로 포맷을 맞추어준다."%Y%m%d" : YYYYMMDD형태로 출력
         # 끝범위 : Datetime
@@ -100,48 +109,62 @@ class requestData(GlobalUtilities):
             return
         res = BSXML
         item = res.findAll('item')
-        if len(item) < 2:
+        # Version 1.15 : 데이터 최신화 여부 구분 기준을 더 명확히 변경.
+        # 가장최신 정보가 오늘 날짜랑 일치하지 않는경우
+        if item[0].find('stateDt').text != datetime.today().strftime("%Y%m%d"):
             return False
             #Test statement
             #res = self.buildRequests(1,-2)
             #item = res.findAll('item')
+        #일치하는 경우
         else:
-            self.noticeMSGHandler("New data has been updated successfully. Continue process...")
+            self.noticeMSGHandler("Today's data detected! Continue process...")
         # Pre process API Request Result
         self.noticeMSGHandler("Pre processing datas...")
-        dayBefore = item[1]
-        today = item[0]
-        dataDate = datetime.strptime(today.find('stateDt').text, "%Y%m%d").date().strftime("%Y-%m-%d")
-        totalDecidedPatient = today.find('decideCnt').text
-        todayDecidedPatient = str(int(today.find('decideCnt').text) - int(dayBefore.find('decideCnt').text))
-        totalDeath = today.find('deathCnt').text
-        increasedDeath = str(int(today.find('deathCnt').text) - int(dayBefore.find('deathCnt').text))
+        #Get Today Data from Requested Data
+        todayData = item[0]
+        todayDateString = datetime.strptime(todayData.find('stateDt').text, "%Y%m%d").date().strftime("%Y-%m-%d")
+
+        # Element Example_Type Dictionary in List : {'Date': '2022-01-10', 'totaldecidedPatient': '667380', 'todaydecidedPatient': '3005', 'totalDeath': '6071', 'increasedDeath': '34'}
+        getDatas = self.dbmg.getCurrentData()
+        # Condition for generate test data
+        if not getDatas or len(getDatas) < 7:
+            self.generateTestData()
+            getDatas = self.dbmg.getCurrentData()
+        graphDataSet = None
+        #Flag Variable :  for if today's data to be synchronized in database
+        updateTodayData = False
+
+        # i : index(start from 0), j : Datetime String
+        for i,j in enumerate(reversed(getDatas)):
+            # From Data Set Find Until Datetime String is not match with today's
+            if str(j['Date']) != todayDateString:
+                print(f"{j['Date']} {todayDateString}")
+                if i == 0:
+                    # If here meaning that today's data hasn't been updated to database
+                    updateTodayData = True
+                graphDataSet = getDatas[i : i + 7]
+                break
+        #today's datetime format string value
+        totalDecidedPatient = todayData.find('decideCnt').text
+        todayDecidedPatient = str(int(todayData.find('decideCnt').text) - int(graphDataSet[0]['totaldecidedPatient']) )
+        totalDeath = todayData.find('deathCnt').text
+        increasedDeath = str(int(todayData.find('deathCnt').text) - int(graphDataSet[0]['totalDeath']))
 
         # Graph Data
         # Return : [latest data's date field, length of current date]
         self.noticeMSGHandler("Checking data for graph...")
-        getCurrentData = self.dbmg.getCurrentDataOnlyRecentDate()
-        # If empty set
-        if not getCurrentData:
-            self.generateTestData()
-        # If have at least one data
-        else:
-            latestDataDate = getCurrentData[0]
-            #today's date as string
-            now = (datetime.now(timezone('Asia/Seoul')) + timedelta(days=0)).strftime("%Y-%m-%d")
-            #Pass if recent data's date field is same with today
-            if now == latestDataDate:
-                pass
-            #Generate data if it's not
-            else:
-                self.dbmg.setCurrentData(f"\'{dataDate}\',\'{totalDecidedPatient}\',\'{todayDecidedPatient}\',\'{totalDeath}\',\'{increasedDeath}\'")
+
+        if updateTodayData:
+            self.dbmg.setCurrentData(f"\'{todayDateString}\',\'{totalDecidedPatient}\',\'{todayDecidedPatient}\',\'{totalDeath}\',\'{increasedDeath}\'")
 
         res = self.addNews()
         if not res:
+            self.warningMSGHandler("Unable to collect news. Please check API Key.")
             return False
 
         dataDictionary = {
-            'dataDate': dataDate,
+            'dataDate': todayDateString,
             'data': {
                 'totalDecidedPatient': totalDecidedPatient,
                 'todayDecidedPatient': todayDecidedPatient,
@@ -159,7 +182,7 @@ class requestData(GlobalUtilities):
         url = datas[0]['OPENAPIURL']
         #Call data for 7days
         end = 1
-        exec = -7
+        exec = -20
         executedPoint = datetime.now(timezone('Asia/Seoul'))
         endDate = executedPoint + timedelta(days=end)  # 하루뒤의 시간을 의미한다.
         executedPoint = executedPoint + timedelta(days=exec)
@@ -175,8 +198,7 @@ class requestData(GlobalUtilities):
             quote_plus('startCreateDt'): searchStart,
             quote_plus('endCreateDt'): searchEnd
         })
-        response = requests.get(url + queryParameter).text.encode(
-            'utf-8')  # 기본적으로 requests를 인코딩한 반환값은 Byte String이 나오게 된다.
+        response = requests.get(url + queryParameter).text.encode('utf-8')  # 기본적으로 requests를 인코딩한 반환값은 Byte String이 나오게 된다.
         response = response.decode('utf-8')  # bytestring to Normal String
         res = BeautifulSoup(response, 'lxml-xml')
         self.dbmg.testData(res)

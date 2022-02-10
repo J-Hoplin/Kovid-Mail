@@ -86,6 +86,6 @@ class makegraph(GlobalUtilities):
                      horizontalalignment='center',
                      verticalalignment='bottom')
         plt.savefig(self.graphDirectory,bbox_inches='tight')
-        plt.close()
+        plt.close("all")
 
 
