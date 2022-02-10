@@ -139,7 +139,6 @@ class requestData(GlobalUtilities):
         for i,j in enumerate(reversed(getDatas)):
             # From Data Set Find Until Datetime String is not match with today's
             if str(j['Date']) != todayDateString:
-                print(f"{j['Date']} {todayDateString}")
                 if i == 0:
                     # If here meaning that today's data hasn't been updated to database
                     updateTodayData = True
