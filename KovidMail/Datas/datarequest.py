@@ -46,7 +46,6 @@ class requestData(GlobalUtilities):
         executedPoint = datetime.now(timezone('Asia/Seoul'))
         endDate = executedPoint + timedelta(days=end)  # 하루뒤의 시간을 의미한다.
         executedPoint = executedPoint + timedelta(days=exec)
-        print(f"{endDate} {executedPoint}")
         # 시작범위 : Datetime
         searchStart = executedPoint.strftime("%Y%m%d")  # strftime으로 포맷을 맞추어준다."%Y%m%d" : YYYYMMDD형태로 출력
         # 끝범위 : Datetime
