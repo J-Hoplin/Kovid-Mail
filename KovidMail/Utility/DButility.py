@@ -302,7 +302,7 @@ class dbutility(GlobalUtilities):
         sqlState = f"SELECT * FROM {db['tablename']}"
         self.sqlCursor.execute(sqlState)
         datas = self.sqlCursor.fetchall()
-        return datas
+        return datas[-7:] # Return Recent 7 datas
 
     def getCurrentDataOnlyRecentDate(self):
         '''

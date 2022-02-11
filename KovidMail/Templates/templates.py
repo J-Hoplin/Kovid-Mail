@@ -146,19 +146,19 @@ class template:
         newsCovid1 = [topicNews[topicKeys[0]][i] for i in random.sample(newsCovid1,3)]
         inlinetemplate1 = ""
         for i in range(len(newsCovid1)):
-            inlinetemplate1 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;\">Topic {i + 1} | <a href=\"{newsCovid1[i]['originallink']}\">{newsCovid1[i]['title']}</a></li>"
+            inlinetemplate1 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;list-style-type: square;\">Topic {i + 1} | <a style=\"text-decoration: none;color: brown;\" href=\"{newsCovid1[i]['originallink']}\">{newsCovid1[i]['title']}</a></li>"
         #Topic2
         newsCovid2 = list(range(len(topicNews[topicKeys[1]])))
         newsCovid2 = [topicNews[topicKeys[1]][i] for i in random.sample(newsCovid2,3)]
         inlinetemplate2 = ""
         for i in range(len(newsCovid2)):
-            inlinetemplate2 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;\">Topic {i + 1} | <a href=\"{newsCovid2[i]['originallink']}\">{newsCovid2[i]['title']}</a></li>"
+            inlinetemplate2 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;list-style-type: square;\">Topic {i + 1} | <a style=\"text-decoration: none;color: brown;\" href=\"{newsCovid2[i]['originallink']}\">{newsCovid2[i]['title']}</a></li>"
         #Topic3
         newsCovid3 = list(range(len(topicNews[topicKeys[2]])))
         newsCovid3 = [topicNews[topicKeys[2]][i] for i in random.sample(newsCovid3,3)]
         inlinetemplate3 = ""
         for i in range(len(newsCovid3)):
-            inlinetemplate3 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;\">Topic {i + 1} | <a href=\"{newsCovid3[i]['originallink']}\">{newsCovid3[i]['title']}</a></li>"
+            inlinetemplate3 += f"<li style=\"line-height: 1.5;font-size: 19px;width: 100%;margin: 19px;list-style-type: square;\">Topic {i + 1} | <a style=\"text-decoration: none;color: brown;\" href=\"{newsCovid3[i]['originallink']}\">{newsCovid3[i]['title']}</a></li>"
 
         __htmltemplate2 = f"""
         <!DOCTYPE html>
@@ -258,7 +258,7 @@ class template:
                         <h3 class="plot-title" style="margin: 0; text-align: center;">지난 {self.graphRange}일간 확진자수 추이 그래프</h3>
                         <img style="width: 600px;height: 400px;border-radius: 6px;" src="cid:graph" class="graph">
                     </div>
-                    <h2>< 주요 토픽 뉴스 ></h2>
+                    <h2>[ 주요 토픽 뉴스 ]</h2>
                     <h3>#{topicKeys[0]}</h3>
                     <ul>
                         {inlinetemplate1}
@@ -273,7 +273,8 @@ class template:
                     </ul>
                     <br>
                     <br>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">< 데이터 출처 ></p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;"></p>
+                    <h3>< 데이터 출처 ></h3>
                     <ul>
                         <li style="font-size: 16px;line-height: 1.5;" class="source"><a href="https://www.data.go.kr/">공공데이터 포털</a> </li>
                         <li style="font-size: 16px;line-height: 1.5;" class="source"><a href="https://developers.naver.com/docs/serviceapi/search/news/news.md#%EB%89%B4%EC%8A%A4">Naver News Search API</a></li>

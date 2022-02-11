@@ -130,24 +130,25 @@ class requestData(GlobalUtilities):
         if not getDatas or len(getDatas) < 7:
             self.generateTestData()
             getDatas = self.dbmg.getCurrentData()
-        graphDataSet = None
+        rangeDataSet = None
         #Flag Variable :  for if today's data to be synchronized in database
         updateTodayData = False
 
+        getDatas = list(reversed(getDatas))
         # i : index(start from 0), j : Datetime String
-        for i,j in enumerate(reversed(getDatas)):
+        for i,j in enumerate(getDatas):
             # From Data Set Find Until Datetime String is not match with today's
             if str(j['Date']) != todayDateString:
                 if i == 0:
                     # If here meaning that today's data hasn't been updated to database
                     updateTodayData = True
-                graphDataSet = getDatas[i : i + 7]
+                rangeDataSet = getDatas[i : i + 7]
                 break
         #today's datetime format string value
         totalDecidedPatient = todayData.find('decideCnt').text
-        todayDecidedPatient = str(int(todayData.find('decideCnt').text) - int(graphDataSet[0]['totaldecidedPatient']) )
+        todayDecidedPatient = str(int(todayData.find('decideCnt').text) - int(rangeDataSet[0]['totaldecidedPatient']) )
         totalDeath = todayData.find('deathCnt').text
-        increasedDeath = str(int(todayData.find('deathCnt').text) - int(graphDataSet[0]['totalDeath']))
+        increasedDeath = str(int(todayData.find('deathCnt').text) - int(rangeDataSet[0]['totalDeath']))
 
         # Graph Data
         # Return : [latest data's date field, length of current date]

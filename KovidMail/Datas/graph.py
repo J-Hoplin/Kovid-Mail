@@ -3,9 +3,11 @@ import matplotlib.pyplot as plt
 
 sys.path.append('..')
 from KovidMail.Utility.globalutility import GlobalUtilities
+from KovidMail.Datas.datarequest import requestData
+from KovidMail.Utility.DButility import dbutility
 
 class makegraph(GlobalUtilities):
-    def __init__(self,dbmg,rqd):
+    def __init__(self,dbmg : dbutility,rqd :requestData):
         self.dbc = dbmg
         self.rqd = rqd
         self.data = self.dbc.getCurrentData()
