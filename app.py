@@ -109,7 +109,7 @@ class scheduler(GlobalUtilities):
         subs = self.dbmg.getSubscriberList()
         while mainloop:
             #Limit maximum request count
-            if re_try >= self.MAXIMUM_REQUEST_COUNT:
+            if re_try >= DefaultConfiguration.MAXIMUM_REQUEST_COUNT:
                 self.logLevelInfo("Maximum request exceeded. Send mail to users about why scheduler can't send mail.")
                 for i in subs:
                     sendres = self.smtpMod.buildMimeAndSendMail(i,True,f"{datetime.today().strftime('%Y년 %m월 %d일')} 코로나 19 데이터 전송 불가에 대하여",DefaultConfiguration.BROADCAST_CONTENT)
