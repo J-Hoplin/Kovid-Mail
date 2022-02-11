@@ -276,11 +276,11 @@ class template:
                     <p style="line-height: 1.5;font-size: 19px;width: 100%;"></p>
                     <h3>< 데이터 출처 ></h3>
                     <ul>
-                        <li style="font-size: 16px;line-height: 1.5;" class="source"><a href="https://www.data.go.kr/">공공데이터 포털</a> </li>
-                        <li style="font-size: 16px;line-height: 1.5;" class="source"><a href="https://developers.naver.com/docs/serviceapi/search/news/news.md#%EB%89%B4%EC%8A%A4">Naver News Search API</a></li>
+                        <li style="list-style-type: square;font-size: 16px;line-height: 1.5;" class="source"><a style=\"text-decoration: none;color: brown;\" href="https://www.data.go.kr/">공공데이터 포털</a> </li>
+                        <li style="list-style-type: square;font-size: 16px;line-height: 1.5;" class="source"><a style=\"text-decoration: none;color: brown;\" href="https://developers.naver.com/docs/serviceapi/search/news/news.md#%EB%89%B4%EC%8A%A4">Naver News Search API</a></li>
                     </ul>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">대한민국 중앙방역대책본부 코로나바이러스 감염증 현황 <a href="http://ncov.mohw.go.kr/">바로가기</a></p>
-                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">제작 : Hoplin / Source Code Opened at <a href="{self.easteregg}">Github</a></p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">대한민국 중앙방역대책본부 코로나바이러스 감염증 현황 <a style=\"text-decoration: none;color: brown;\" href="http://ncov.mohw.go.kr/">바로가기</a></p>
+                    <p style="line-height: 1.5;font-size: 19px;width: 100%;">제작 : Hoplin / Source Code Opened at <a style=\"text-decoration: none;color: brown;\" href="{self.easteregg}">Github</a></p>
                 </div>
             </body>
         </html>
