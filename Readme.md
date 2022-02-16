@@ -17,7 +17,9 @@ Kovid Mail은 대한민국 코로나 19 바이러스 일일 현황을 아침 10~
 
 - Synology NAS / Maria DB - External Access
 
-- RAM Usage Benchmark : Min 30mb ~ Max 220mb / 현재 버전은 스케줄러 데몬의 메모리 누수가 심한것으로 측정되었습니다. 조만간 긴급 패치를 통해 대처할 예정입니다.
+- RAM Usage Benchmark
+  - manage.py : 65mb ~ 70mb
+  - app.py : 100mb ~ 120mb
 ***
 ### Basic Manuals
 ![image](https://user-images.githubusercontent.com/45956041/146395663-369bdd36-3fa2-4006-ab85-03cc0786f01f.png)
