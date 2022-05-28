@@ -21,6 +21,10 @@ Kovid Mail은 대한민국 코로나 19 바이러스 일일 현황을 아침 10~
   - manage.py : 65mb ~ 70mb
   - app.py : 100mb ~ 120mb
 ***
+### 예시 메일
+![IMG_3053](https://user-images.githubusercontent.com/45956041/170833728-c0ba4f51-44ff-43cf-8c77-cfb46aa16477.PNG)
+![IMG_3054](https://user-images.githubusercontent.com/45956041/170833729-3d546676-c430-4351-a956-6e94eb0443f8.PNG)
+***
 ### Basic Manuals
 ![image](https://user-images.githubusercontent.com/45956041/146395663-369bdd36-3fa2-4006-ab85-03cc0786f01f.png)
 
