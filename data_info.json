@@ -1,0 +1,15 @@
+{
+  "Covid19" : {
+    "endpoint" : "http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson",
+    "data" : {
+      "key": ""
+    }
+  },
+  "NaverNews": {
+    "endpoint": "https://openapi.naver.com/v1/search/news.json",
+    "data": {
+      "id": "",
+      "secret": ""
+    }
+  }
+}
